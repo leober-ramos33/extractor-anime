@@ -52,6 +52,8 @@ for (( f=1; f <= $episodes; f++ )); do
 
 	if echo "${html}" | grep 'https://jkanime.net/jkopen.php?u=...........' &> /dev/null; then
 		link=$(echo "${html}" | grep 'https://jkanime.net/jkopen.php?u=...........' | sed 's/.*src="//g' | sed 's/".*//g' | sed 's/jkanime.net\/jkopen.php?u=/openload.co\/embed\//g')
+	elif echo "${html}" | grep 'https://www.yourupload.com/embed/............' &> /dev/null; then
+		link=$(echo "${html}" | grep 'https://yourupload.com/embed/............' | sed 's/.*src="//g' | sed 's/".*//g')
 	else
 		echo "${f}: " > .linux-$anime.txt
 		echo "#" > .linux-$anime.min.txt
