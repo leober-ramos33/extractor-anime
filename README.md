@@ -6,14 +6,11 @@ Requisitos:
 * cURL
 * zip
 
-Uso: `./extractor-jkanime.net.sh {serie} {episodios}`
+Uso: `./extractor-{pagina}.sh {serie} {episodios}`
 Ejemplo: `./extractor-jkanime.net.sh black-clover-tv 45`
-El nombre de la serie lo extraen del enlace, `http://jkanime.net/black-clover-tv`, extraen lo ultimo y quedaria como black-clover-tv
-
-Uso: `./extractor-animeyt.tv.sh {serie} {episodios}`
-Ejemplo: `./extractor-anime.yt.sh black-clover 45`
-El nombre de la serie lo extraen del enlace, `https://animeyt.tv/black-clover`, extraen lo ultimo y quedaria como black-clover
+El nombre de la serie lo extraen del enlace, `http://jkanime.net/black-clover-tv` - `https://animeyt.tv/black-clover` - `http://reyanimeonline.com/anime/black-clover-tv`, extraen lo ultimo y quedaria como black-clover-tv.
 
 Paginas soportadas:
-* http://jkanime.net
-* http://animeyt.tv
+* http://jkanime.net - Openload.co, YourUpload
+* https://animeyt.tv - Mega.nz, Dailymotion
+* http://reyanimeonline.com - Openload.co, Streamango, ok.ru
