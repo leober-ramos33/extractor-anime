@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ###### Information #######
-# Script for Bash, for extrancting links of anime from jkanime.net
+# Script for Bash, for extrancting links of anime from animeyt.tv
 # By @yonaikerlol
 
 
@@ -50,10 +50,10 @@ for (( f=1; f <= $episodes; f++ )); do
         echo -n "${f}... "                               
         html=$(curl -Ls "https://animeyt.tv/ver/${anime}-${f}-sub-espanol")
 
-	if echo "${html}" | grep mega.nz &> /dev/null; then
-		link=$(echo "${html}" | grep mega.nz | sed 's/.*src="//g' | sed 's/".*//g')
-	elif echo "${html}" | grep 'dailymotion.com/embed/video/...................?autoPlay=1' &> /dev/null; then
+	if echo "${html}" | grep 'dailymotion.com/embed/video/...................?autoPlay=1' &> /dev/null; then
 		link=$(echo "${html}" | grep 'dailymotion.com/embed/video/...................?autoPlay=1' | sed 's/.*src="//g' | sed 's/".*//g' | sed 's/\?.*//g')
+	elif echo "${html}" | grep mega.nz &> /dev/null; then
+		link=$(echo "${html}" | grep mega.nz | sed 's/.*src="//g' | sed 's/".*//g')
 	else
 		echo "${f}: " > .linux-$anime.txt
 		echo "#" > .linux-$anime.min.txt
@@ -66,15 +66,11 @@ for (( f=1; f <= $episodes; f++ )); do
 	echo -e "${green}OK!${normal} ( ${link} )"
 done
 
-sed 's/$'"/`echo \\\r`/" .linux-$anime.txt > windows-$anime.txt
-sed 's/$'"/`echo \\\r`/" .linux-$anime.min.txt > windows-$anime.min.txt
+sed 's/$'"/`echo \\\r`/" .linux-$anime.txt > $anime.txt
+sed 's/$'"/`echo \\\r`/" .linux-$anime.min.txt > $anime.min.txt
 
-mv .linux-$anime.txt linux-$anime.txt &> /dev/null
-mv .linux-$anime.min.txt linux-$anime.min.txt &> /dev/null
+zip $anime.zip $anime.txt $anime.min.txt &> /dev/null
 
-zip $anime.zip linux-$anime.txt linux-$anime.min.txt windows-$anime.txt windows-$anime.min.txt &> /dev/null
-
-rm linux-$anime.txt &> /dev/null
-rm linux-$anime.min.txt &> /dev/null
-rm windows-$anime.txt &> /dev/null
-rm windows-$anime.min.txt &> /dev/null
+rm .linux-* &> /dev/null
+rm $anime.txt &> /dev/null
+rm $anime.min.txt &> /dev/null
