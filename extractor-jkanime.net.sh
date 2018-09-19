@@ -34,13 +34,12 @@ echo "
 |_______||__| |__|  |___|  |___|  |_||__| |__||_______|  |___|  |_______||___|  |_|
 "
 
-animeName=$(echo "${anime}" | sed 's/-/ /g' | sed -e "s/\b\(.\)/\u\1/g")
-
 if [ -z "${1}" ] || [ -z "${2}" ]; then
 	echo -e "Usage: ${0} {anime} {episodes}\nExample: ${0} black-clover-tv 45\n(http://jkanime.net/{anime})"
 	exit 0
 fi
 
+animeName=$(echo "${anime}" | sed 's/-/ /g' | sed -e "s/\b\(.\)/\u\1/g")
 echo -e "\nExtracting ${underlined}${animeName}:${normal} ( http://jkanime.net/${anime} )\n"
 
 echo "${animeName}:" > .linux-$anime.txt
@@ -54,6 +53,8 @@ for (( f=1; f <= $episodes; f++ )); do
 		link=$(echo "${html}" | grep 'https://jkanime.net/jkopen.php?u=...........' | sed 's/.*src="//g' | sed 's/".*//g' | sed 's/jkanime.net\/jkopen.php?u=/openload.co\/embed\//g')
 	elif echo "${html}" | grep 'https://www.yourupload.com/embed/............' &> /dev/null; then
 		link=$(echo "${html}" | grep 'https://yourupload.com/embed/............' | sed 's/.*src="//g' | sed 's/".*//g')
+	elif echo "${html}" | grep -o 'http://www.dailymotion.com/embed/........' &> /dev/null; then
+		link=$(echo "${html}" | grep -o 'http://www.dailymotion.com/embed/video/.......')
 	else
 		echo "${f}: " > .linux-$anime.txt
 		echo "#" > .linux-$anime.min.txt
@@ -66,15 +67,11 @@ for (( f=1; f <= $episodes; f++ )); do
 	echo -e "${green}OK!${normal} ( ${link} )"
 done
 
-sed 's/$'"/`echo \\\r`/" .linux-$anime.txt > windows-$anime.txt
-sed 's/$'"/`echo \\\r`/" .linux-$anime.min.txt > windows-$anime.min.txt
+sed 's/$'"/`echo \\\r`/" .linux-$anime.txt > $anime.txt
+sed 's/$'"/`echo \\\r`/" .linux-$anime.min.txt > $anime.min.txt
 
-mv .linux-$anime.txt linux-$anime.txt &> /dev/null
-mv .linux-$anime.min.txt linux-$anime.min.txt &> /dev/null
+zip $anime.zip $anime.txt $anime.min.txt &> /dev/null
 
-zip $anime.zip linux-$anime.txt linux-$anime.min.txt windows-$anime.txt windows-$anime.min.txt &> /dev/null
-
-rm linux-$anime.txt &> /dev/null
-rm linux-$anime.min.txt &> /dev/null
-rm windows-$anime.txt &> /dev/null
-rm windows-$anime.min.txt &> /dev/null
+rm .linux-* &> /dev/null
+rm $anime.txt &> /dev/null
+rm $anime.min.txt &> /dev/null
