@@ -52,7 +52,7 @@ for (( f=1; f <= $episodes; f++ )); do
 	if echo "${html}" | grep -o "https://openload.co/embed/..........." &> /dev/null; then
 		link=$(echo "${html}" | grep -o "https://openload.co/embed/...........")
 	elif echo "${html}" | grep -o 'https://streamango.com/embed/.................' &> /dev/null; then
-		link=$(echo "${html}" | grep -o "https://streamango.com/embed/.................")
+		link=$(echo "${html}" | grep -o "https://streamango.com/embed/................")
 	elif echo "${html}" | grep -o 'ok.ru/videoembed/.............' &> /dev/null; then
 		link=$(echo "${html}" | grep -o 'ok.ru/videoembed/.............' | sed 's/^/https:\/\//g')
 	else
@@ -67,15 +67,11 @@ for (( f=1; f <= $episodes; f++ )); do
 	echo -e "${green}OK!${normal} ( ${link} )"
 done
 
-sed 's/$'"/`echo \\\r`/" .linux-$anime.txt > windows-$anime.txt
-sed 's/$'"/`echo \\\r`/" .linux-$anime.min.txt > windows-$anime.min.txt
+sed 's/$'"/`echo \\\r`/" .linux-$anime.txt > $anime.txt
+sed 's/$'"/`echo \\\r`/" .linux-$anime.min.txt > $anime.min.txt
 
-mv .linux-$anime.txt linux-$anime.txt &> /dev/null
-mv .linux-$anime.min.txt linux-$anime.min.txt &> /dev/null
+zip $anime.zip $anime.txt $anime.min.txt &> /dev/null
 
-zip $anime.zip linux-$anime.txt linux-$anime.min.txt windows-$anime.txt windows-$anime.min.txt &> /dev/null
-
-rm linux-$anime.txt &> /dev/null
-rm linux-$anime.min.txt &> /dev/null
-rm windows-$anime.txt &> /dev/null
-rm windows-$anime.min.txt &> /dev/null
+rm .linux-* &> /dev/null
+rm $anime.txt &> /dev/null
+rm $anime.min.txt &> /dev/null
