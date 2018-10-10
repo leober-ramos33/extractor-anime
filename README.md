@@ -11,7 +11,8 @@ Respete y apoye a los creadores de los animes, junto a su elenco.
 * zip
 
 Uso: `./extractor-<pagina>.sh <id de la serie> <episodios>`
-Ejemplo: `./extractor-pelisplus.co.sh mr-robot 10 12 10`
+
+Ejemplo: `./extractor-jkanime.netsh black-clover-tv 52`
 
 Paginas soportadas:
 * http://jkanime.net - Openload.co, YourUpload, Dailymotion
