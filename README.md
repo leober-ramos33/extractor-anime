@@ -1,20 +1,20 @@
 # extractor-anime
 
-Extractor-Anime es un conjunto de scripts escritos en Bash para extraer enlaces de descarga de animes de paginas piratas.
+Extractor-Anime is a set of scripts written in Bash to extract anime download links from pirated websites.
 
-Solo para que conste, no creé esta herramienta para tolerar la piratería, pero es inevitable y sé que alguien la usará para tales fines.
-Independientemente, la forma en que utilice esta herramienta es totalmente su responsabilidad.
-Respete y apoye a los creadores de los animes, junto a su elenco.
+Just for the record, I did not create this tool to tolerate piracy, but it is inevitable and I know someone will use it for such purposes.
+Regardless, the way you use this tool is entirely your responsibility.
+Respect and support the creators of the animes, along with their cast.
 
-### Requisitos:
+### Requirements:
 * cURL
 * zip
 
-Uso: `./extractor-<pagina>.sh <id de la serie> <episodios>`
+Usage: `./extractor-<page>.sh <id of anime> <episodes>`
 
-Ejemplo: `./extractor-jkanime.netsh black-clover-tv 52`
+Example: `./extractor-jkanime.netsh black-clover-tv 52`
 
-Paginas soportadas:
+Supported pages:
 * http://jkanime.net - Openload.co, YourUpload, Dailymotion
 * https://reyanimeonline.com - Openload.co, Stremango, ok.ru
 * http://animeyt.tv - Dailymotion, Mega
