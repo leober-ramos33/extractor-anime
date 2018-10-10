@@ -12,7 +12,7 @@ Respect and support the creators of the animes, along with their cast.
 
 Usage: `./extractor-<page>.sh <id of anime> <episodes>`
 
-Example: `./extractor-jkanime.netsh black-clover-tv 52`
+Example: `./extractor-jkanime.net.sh black-clover-tv 52`
 
 Supported pages:
 * http://jkanime.net - Openload.co, YourUpload, Dailymotion
