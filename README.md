@@ -14,7 +14,7 @@ Usage: `./extractor-<page>.sh <id of anime> <episodes>`
 
 Example: `./extractor-jkanime.net.sh black-clover-tv 52`
 
-Supported pages:
+### Supported pages:
 * http://jkanime.net - Openload.co, YourUpload, Dailymotion
 * https://reyanimeonline.com - Openload.co, Stremango, ok.ru
 * http://animeyt.tv - Dailymotion, Mega
