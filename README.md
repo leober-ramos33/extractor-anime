@@ -16,5 +16,5 @@ Example: `./extractor-jkanime.net.sh black-clover-tv 52`
 
 ### Supported pages:
 * http://jkanime.net - Openload.co, YourUpload, Dailymotion
-* https://reyanimeonline.com - Openload.co, Stremango, ok.ru
+* https://reyanimeonline.com - Openload.co, Streamango, ok.ru
 * http://animeyt.tv - Dailymotion, Mega
