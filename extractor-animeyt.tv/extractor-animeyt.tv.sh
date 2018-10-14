@@ -56,13 +56,17 @@ for (( f=1; f <= $2; f++ )); do
 	elif echo "${req}" | grep 'mega.nz' &> /dev/null; then
 		link=$(echo "${req}" | grep 'mega.nz' | sed 's/.*src="//g' | sed 's/".*//g')
 	else
-		echo "${f}:" >> ".${1}.txt"
+		if [ "${f}" -lt 10 ]; then
+			echo "0${f}:" >> ".${1}.txt"
+		else
+			echo "${f}:" >> ".${1}.txt"
+		fi
 		echo "#" >> ".${1}.min.txt"
 		echo -e "\t${red}NOK!${normal}"
 		continue
 	fi
 	
-	if [ ${f} -lt 10 ]; then
+	if [ "${f}" -lt 10 ]; then
 		echo "0${f}: ${link}" >> ".${1}.txt"
 	else
 		echo "${f}: ${link}" >> ".${1}.txt"
