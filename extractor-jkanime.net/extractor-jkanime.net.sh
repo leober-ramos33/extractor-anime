@@ -36,16 +36,16 @@ if [ -z "${1}" ] || [ "${1}" = "-h" ] || [ "${1}" = "--help" ] || [ "${1}" = "--
 fi
 
 anime=$(echo "${1}" | sed 's/-/ /g' | sed -e "s/\b\(.\)/\u\1/g")
-echo -e "Extracting ${bold}${anime}:${normal} ( ${underlined}http://jkanime.net/${1}${normal} )\n"
+echo -e "Extracting ${bold}${anime}:${normal} ( ${underlined}https://jkanime.net/${1}${normal} )\n"
 
 echo "${anime}:" > ".${1}.txt"
 echo "# ${anime}:" > ".${1}.min.txt"
 
 for (( f=1; f <= $2; f++ )); do
 	if [ ${f} -lt 10 ]; then
-		echo -en "0${f}... ( ${underlined}http://jkanime.net/${1}/${f}${normal} )"
+		echo -en "0${f}... ( ${underlined}https://jkanime.net/${1}/${f}${normal} )"
 	else
-		echo -en "${f}... ( ${underlined}http://jkanime.net/${1}/${f}${normal} )"
+		echo -en "${f}... ( ${underlined}https://jkanime.net/${1}/${f}${normal} )"
 	fi
 	req=$(curl -Ls "http://jkanime.net/${1}/${f}")
 

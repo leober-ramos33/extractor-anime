@@ -27,7 +27,7 @@ if [ -z "${1}" ] || [ "${1}" = "-h" ] || [ "${1}" = "--help" ] || [ "${1}" = "--
 fi
 
 anime=$(echo "${1}" | sed 's/-/ /g' | sed -e "s/\b\(.\)/\u\1/g")
-echo -e "Extracting ${bold}${anime}:${normal} ( ${underlined}https://reyanimeonline.com/anime/${1}${normal} )\n"
+echo -e "Extracting ${bold}${anime}:${normal} ( ${underlined}http://reyanimeonline.com/anime/${1}${normal} )\n"
 
 echo "${anime}:" > ".${1}.txt"
 echo "# ${anime}:" > ".${1}.min.txt"
@@ -38,7 +38,7 @@ for (( f=1; f <= $2; f++ )); do
 	else
 		echo -en "${f}... ( ${underlined}http://reyanimeonline.com/ver/${1}-${f}${normal} )"
 	fi
-	req=$(curl -s "https://reyanimeonline.com/ver/${1}-${f}")
+	req=$(curl -s "http://reyanimeonline.com/ver/${1}-${f}")
 
 	if echo "${req}" | grep -o "https://openload.co/embed/..........." &> /dev/null; then
 		link=$(echo "${req}" | grep -o "https://openload.co/embed/...........")

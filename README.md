@@ -24,6 +24,6 @@ Respect and support the creators of the animes, along with their cast.
 ### Supported pages:
 | Title | URL | Servers |
 |---|---|---|
-| JKanime | http://jkanime.net | Openload.co, YourUpload, Dailymotion, Rapidvideo |
-| reyanimeonline | https://reyanimeonline.com | Openload.co, Streamango, ok.ru |
-| AnimeYT | http://animeyt.tv | Dailymotion, Mega |
+| JKanime | https://jkanime.net | Openload.co, YourUpload, Dailymotion, Rapidvideo |
+| reyanimeonline | http://reyanimeonline.com | Openload.co, Streamango, ok.ru |
+| AnimeYT | https://animeyt.tv | Dailymotion, Mega |
