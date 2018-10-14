@@ -1,76 +1,82 @@
 #!/bin/bash
-
-###### Information #######
-# Script for Bash, for extrancting links of anime from animeyt.tv
+# Script for Bash, for extracting links of anime from animeyt.tv
 # By @yonaikerlol
-
-
-
-####### CONFIG #########
-
-# Episodes
-episodes=$2
-
-# Name of anime (https://animeyt.tv/{anime})
-anime="${1}"
-
-
-####### END CONFIG ##########
 
 
 green="\e[32m"
 normal="\e[0m"
 underlined="\e[4m"
+bold="\e[1m"
 red="\e[31m"
 
 clear
 echo "
- _______  __   __  _______  ______    _______  _______  _______  _______  ______
-|       ||  |_|  ||       ||    _ |  |   _   ||       ||       ||       ||    _ |
-|    ___||       ||_     _||   | ||  |  |_|  ||       ||_     _||   _   ||   | ||
-|   |___ |       |  |   |  |   |_||_ |       ||       |  |   |  |  | |  ||   |_||_
-|    ___| |     |   |   |  |    __  ||       ||      _|  |   |  |  |_|  ||    __  |
-|   |___ |   _   |  |   |  |   |  | ||   _   ||     |_   |   |  |       ||   |  | |
-|_______||__| |__|  |___|  |___|  |_||__| |__||_______|  |___|  |_______||___|  |_|
+#######
+#       #    # ##### #####    ##    ####  #####  ####  #####
+#        #  #    #   #    #  #  #  #    #   #   #    # #    #
+#####     ##     #   #    # #    # #        #   #    # #    #
+#         ##     #   #####  ###### #        #   #    # #####
+#        #  #    #   #   #  #    # #    #   #   #    # #   #
+####### #    #   #   #    # #    #  ####    #    ####  #    #
+
+   #                           #     # #######
+  # #   #    # # #    # ######  #   #     #
+ #   #  ##   # # ##  ## #        # #      #
+#     # # #  # # # ## # #####     #       #
+####### #  # # # #    # #         #       #
+#     # #   ## # #    # #         #       #
+#     # #    # # #    # ######    #       #
+
 "
 
-animeName=$(echo "${anime}" | sed 's/-/ /g' | sed -e "s/\b\(.\)/\u\1/g")
-
-if [ -z "${1}" ] || [ -z "${2}" ]; then
-	echo -e "Usage: ${0} {anime} {episodes}\nExample: ${0} black-clover 45\n(https://animeyt.tv/{anime})"
+if [ -z "${1}" ] || [ "${1}" = "-h" ] || [ "${1}" = "--help" ] || [ "${1}" = "--version" ] || [ -z "${2}" ]; then
+	echo "Usage: ${0} <id of anime> <episodes>"
+	echo "Example: ${0} black-clover 45"
 	exit 0
 fi
 
-echo -e "\nExtracting ${underlined}${animeName}:${normal} ( https://animeyt.tv/${anime} )\n"
+anime=$(echo "${1}" | sed 's/-/ /g' | sed -e "s/\b\(.\)/\u\1/g")
 
-echo "${animeName}:" > .linux-$anime.txt
-echo "# ${animeName}:" > .linux-$anime.min.txt
+echo -e "Extracting ${bold}${anime}:${normal} ( ${underlined}https://animeyt.tv/${1}${normal} )\n"
 
-for (( f=1; f <= $episodes; f++ )); do                     
-        echo -n "${f}... "                               
-        html=$(curl -Ls "https://animeyt.tv/ver/${anime}-${f}-sub-espanol")
+echo "${anime}:" > ".${1}.txt"
+echo "# ${anime}:" > ".${1}.min.txt"
 
-	if echo "${html}" | grep 'dailymotion.com/embed/video/...................?autoPlay=1' &> /dev/null; then
-		link=$(echo "${html}" | grep 'dailymotion.com/embed/video/...................?autoPlay=1' | sed 's/.*src="//g' | sed 's/".*//g' | sed 's/\?.*//g')
-	elif echo "${html}" | grep mega.nz &> /dev/null; then
-		link=$(echo "${html}" | grep mega.nz | sed 's/.*src="//g' | sed 's/".*//g')
+for (( f=1; f <= $2; f++ )); do
+	if [ ${f} -lt 10 ]; then
+		echo -en "0${f}... ( ${underlined}https://animeyt.tv/ver/${1}-${f}-sub-espanol${normal} )"
 	else
-		echo "${f}: " > .linux-$anime.txt
-		echo "#" > .linux-$anime.min.txt
-		echo -e "${red}NOK!${normal}"
-		continue
+		echo -en "${f}... ( ${underlined}https://animeyt.tv/ver/${1}-${f}-sub-espanol${normal} )"
 	fi
 
-	echo "${f}: ${link}" >> .linux-$anime.txt
-	echo "${link}" >> .linux-$anime.min.txt
-	echo -e "${green}OK!${normal} ( ${link} )"
+	req=$(curl -Ls "https://animeyt.tv/ver/${1}-${f}-sub-espanol")
+
+	if echo "${req}" | grep -o 'https:\/\/www\.dailymotion\.com\/embed\/video\/...................?autoPlay=1' &> /dev/null; then
+		link=$(echo "${req}" | grep -o 'https:\/\/www\.dailymotion\.com\/embed\/video\/...................?autoPlay=1' | sed 's/?autoPlay=1//g')
+	elif echo "${req}" | grep 'mega.nz' &> /dev/null; then
+		link=$(echo "${req}" | grep 'mega.nz' | sed 's/.*src="//g' | sed 's/".*//g')
+	else
+		echo "${f}:" >> ".${1}.txt"
+		echo "#" >> ".${1}.min.txt"
+		echo -e "\t${red}NOK!${normal}"
+		continue
+	fi
+	
+	if [ ${f} -lt 10 ]; then
+		echo "0${f}: ${link}" >> ".${1}.txt"
+	else
+		echo "${f}: ${link}" >> ".${1}.txt"
+	fi
+	echo "${link}" >> ".${1}.min.txt"
+	echo -e "\t${green}OK!${normal} ( ${bold}${link}${normal} )"
 done
 
-sed 's/$'"/`echo \\\r`/" .linux-$anime.txt > $anime.txt
-sed 's/$'"/`echo \\\r`/" .linux-$anime.min.txt > $anime.min.txt
+sed 's/$'"/`echo \\\r`/" ".${1}.txt" > "${1}.txt"
+sed 's/$'"/`echo \\\r`/" ".${1}.min.txt" > "${1}.min.txt"
 
-zip $anime.zip $anime.txt $anime.min.txt &> /dev/null
+zip "${1}.zip" "${1}.txt" "${1}.min.txt" &> /dev/null
 
-rm .linux-* &> /dev/null
-rm $anime.txt &> /dev/null
-rm $anime.min.txt &> /dev/null
+rm ".${1}.txt" &> /dev/null
+rm ".${1}.min.txt" &> /dev/null
+rm "${1}.txt" &> /dev/null
+rm "${1}.min.txt" &> /dev/null
