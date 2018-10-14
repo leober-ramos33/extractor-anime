@@ -70,11 +70,25 @@ for (( f=1; f <= $2; f++ )); do
 		links=$(echo "${req}" | grep -o 'https:\/\/www\.dailymotion\.com\/embed\/video\/...................?autoPlay=1')
 		links="${links}\n$(echo "${req}" | grep -o 'https:\/\/mega\.nz\/embed#\!........\!...........................................')"
 	elif [ "${dailymotion}" = true ]; then
-		options="\n\t1. Dailymotion"
-		links=$(echo "${req}" | grep -o 'https:\/\/www\.dailymotion\.com\/embed\/video\/...................?autoPlay=1')
+		link=$(echo "${req}" | grep -o 'https:\/\/www\.dailymotion\.com\/embed\/video\/...................?autoPlay=1')
+		if [ "${f}" -lt 10 ]; then
+			echo "0${f}: ${link}" >> ".${1}.txt"
+		else
+			echo "${f}: ${link}" >> ".${1}.txt"
+		fi
+		echo "${link}" >> ".${1}.min.txt"
+		echo -e "\n\t${green}OK!${normal} ( ${bold}${link}${normal} )\n"
+		continue
 	elif [ "${mega}" = true ]; then
-		options="\n\t1. MEGA"
-		links=$(echo "${req}" | grep -o 'https:\/\/mega\.nz\/embed#\!........\!...........................................')
+		link=$(echo "${req}" | grep -o 'https:\/\/mega\.nz\/embed#\!........\!...........................................')
+		if [ "${f}" -lt 10 ]; then
+			echo "0${f}: ${link}" >> ".${1}.txt"
+		else
+			echo "${f}: ${link}" >> ".${1}.txt"
+		fi
+		echo "${link}" >> ".${1}.min.txt"
+		echo -e "\n\t${green}OK!${normal} ( ${bold}${link}${normal} )\n"
+		continue
 	fi
 	echo -e "\n\tOptions: ${options}"
 	echo -e "\t${red}WARNING:${normal} You have 10 seconds to answer, if you do not answer, option 1 will be chosen by default."
