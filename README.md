@@ -26,4 +26,4 @@ Respect and support the creators of the animes, along with their cast.
 |---|---|---|
 | JKanime | https://jkanime.net | Openload.co, YourUpload, Dailymotion, Rapidvideo |
 | reyanimeonline | http://reyanimeonline.com | Openload.co, Streamango, ok.ru |
-| AnimeYT | https://animeyt.tv | Dailymotion, Mega |
+| AnimeYT | https://www.animeyt.tv | Dailymotion, Mega |

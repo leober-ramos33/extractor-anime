@@ -37,19 +37,19 @@ fi
 
 anime=$(echo "${1}" | sed 's/-/ /g' | sed -e "s/\b\(.\)/\u\1/g")
 
-echo -e "Extracting ${bold}${anime}:${normal} ( ${underlined}https://animeyt.tv/${1}${normal} )\n"
+echo -e "Extracting ${bold}${anime}:${normal} ( ${underlined}https://www.animeyt.tv/${1}${normal} )\n"
 
 echo "${anime}:" > ".${1}.txt"
 echo "# ${anime}:" > ".${1}.min.txt"
 
 for (( f=1; f <= $2; f++ )); do
 	if [ ${f} -lt 10 ]; then
-		echo -en "0${f}... ( ${underlined}https://animeyt.tv/ver/${1}-${f}-sub-espanol${normal} )"
+		echo -en "0${f}... ( ${underlined}https://www.animeyt.tv/ver/${1}-${f}-sub-espanol${normal} )"
 	else
-		echo -en "${f}... ( ${underlined}https://animeyt.tv/ver/${1}-${f}-sub-espanol${normal} )"
+		echo -en "${f}... ( ${underlined}https://www.animeyt.tv/ver/${1}-${f}-sub-espanol${normal} )"
 	fi
 
-	req=$(curl -Ls "https://animeyt.tv/ver/${1}-${f}-sub-espanol")
+	req=$(curl -Ls "https://www.animeyt.tv/ver/${1}-${f}-sub-espanol")
 
 	if echo "${req}" | grep -o 'https:\/\/www\.dailymotion\.com\/embed\/video\/...................?autoPlay=1' &> /dev/null; then
 		link=$(echo "${req}" | grep -o 'https:\/\/www\.dailymotion\.com\/embed\/video\/...................?autoPlay=1' | sed 's/?autoPlay=1//g')
