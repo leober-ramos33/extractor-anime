@@ -36,7 +36,7 @@ if [ -z "${1}" ] || [ "${1}" = "-h" ] || [ "${1}" = "--help" ] || [ "${1}" = "--
 fi
 
 anime=$(echo "${1}" | sed 's/-/ /g' | sed -e "s/\b\(.\)/\u\1/g")
-echo -e "\nExtracting ${bold}${anime}:${normal} ( ${underlined}http://jkanime.net/${1}${normal} )\n"
+echo -e "Extracting ${bold}${anime}:${normal} ( ${underlined}http://jkanime.net/${1}${normal} )\n"
 
 echo "${anime}:" > ".${1}.txt"
 echo "# ${anime}:" > ".${1}.min.txt"

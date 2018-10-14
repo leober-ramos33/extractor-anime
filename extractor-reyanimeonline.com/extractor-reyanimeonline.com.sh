@@ -1,77 +1,77 @@
 #!/bin/bash
-
-###### Information #######
-# Script for Bash, for extrancting links of anime from jkanime.net
+# Script for Bash, for extracting links of anime from jkanime.net
 # By @yonaikerlol
-
-
-
-####### CONFIG #########
-
-# Episodes
-episodes=$2
-
-# Name of anime (https://reyanimeonline.com/anime/{anime})
-anime="${1}"
-
-
-####### END CONFIG ##########
 
 
 green="\e[32m"
 normal="\e[0m"
+bold="\e[1m"
 underlined="\e[4m"
 red="\e[31m"
 
 clear
 echo "
- _______  __   __  _______  ______    _______  _______  _______  _______  ______
-|       ||  |_|  ||       ||    _ |  |   _   ||       ||       ||       ||    _ |
-|    ___||       ||_     _||   | ||  |  |_|  ||       ||_     _||   _   ||   | ||
-|   |___ |       |  |   |  |   |_||_ |       ||       |  |   |  |  | |  ||   |_||_
-|    ___| |     |   |   |  |    __  ||       ||      _|  |   |  |  |_|  ||    __  |
-|   |___ |   _   |  |   |  |   |  | ||   _   ||     |_   |   |  |       ||   |  | |
-|_______||__| |__|  |___|  |___|  |_||__| |__||_______|  |___|  |_______||___|  |_|
+#######
+#       #    # ##### #####    ##    ####  #####  ####  #####
+#        #  #    #   #    #  #  #  #    #   #   #    # #    #
+#####     ##     #   #    # #    # #        #   #    # #    #
+#         ##     #   #####  ###### #        #   #    # #####
+#        #  #    #   #   #  #    # #    #   #   #    # #   #
+####### #    #   #   #    # #    #  ####    #    ####  #    #
 "
 
-if [ -z "${1}" ] || [ -z "${2}" ]; then
-	echo -e "Usage: ${0} {anime} {episodes}\nExample: ${0} black-clover-tv 45\n(https://reyanimeonline.com/anime/{anime})"
+if [ -z "${1}" ] || [ "${1}" = "-h" ] || [ "${1}" = "--help" ] || [ "${1}" = "--version" ] || [ -z "${2}" ]; then
+	echo "Usage: ${0} <anime> <episodes>"
+	echo "Example: ${0} black-clover-tv 45"
 	exit 0
 fi
 
-animeName=$(echo "${anime}" | sed 's/-/ /g' | sed -e "s/\b\(.\)/\u\1/g")
-echo -e "\nExtrancting ${underlined}${animeName}:${normal} ( https://reyanimeonline.com/anime/${anime} )\n"
+anime=$(echo "${1}" | sed 's/-/ /g' | sed -e "s/\b\(.\)/\u\1/g")
+echo -e "Extracting ${bold}${anime}:${normal} ( ${underlined}https://reyanimeonline.com/anime/${1}${normal} )\n"
 
-echo "${animeName}:" > .linux-$anime.txt
-echo "# ${animeName}:" > .linux-$anime.min.txt
+echo "${anime}:" > ".${1}.txt"
+echo "# ${anime}:" > ".${1}.min.txt"
 
-for (( f=1; f <= $episodes; f++ )); do
-	echo -n "${f}... "
-	html=$(curl -s "https://reyanimeonline.com/ver/${anime}-${f}")
-
-	if echo "${html}" | grep -o "https://openload.co/embed/..........." &> /dev/null; then
-		link=$(echo "${html}" | grep -o "https://openload.co/embed/...........")
-	elif echo "${html}" | grep -o 'https://streamango.com/embed/.................' &> /dev/null; then
-		link=$(echo "${html}" | grep -o "https://streamango.com/embed/................")
-	elif echo "${html}" | grep -o 'ok.ru/videoembed/.............' &> /dev/null; then
-		link=$(echo "${html}" | grep -o 'ok.ru/videoembed/.............' | sed 's/^/https:\/\//g')
+for (( f=1; f <= $2; f++ )); do
+	if [ ${f} -lt 10 ]; then
+		echo -en "0${f}... ( ${underlined}http://reyanimeonline.com/ver/${1}-${f}${normal} )"
 	else
-		echo "${f}: " > .linux-$anime.txt
-		echo "#" > .linux-$anime.min.txt
-		echo -e "${red}NOK!${normal}"
+		echo -en "${f}... ( ${underlined}http://reyanimeonline.com/ver/${1}-${f}${normal} )"
+	fi
+	req=$(curl -s "https://reyanimeonline.com/ver/${1}-${f}")
+
+	if echo "${req}" | grep -o "https://openload.co/embed/..........." &> /dev/null; then
+		link=$(echo "${req}" | grep -o "https://openload.co/embed/...........")
+	elif echo "${req}" | grep -o 'https://streamango.com/embed/.................' &> /dev/null; then
+		link=$(echo "${req}" | grep -o "https://streamango.com/embed/................")
+	elif echo "${req}" | grep -o 'ok.ru/videoembed/.............' &> /dev/null; then
+		link=$(echo "${req}" | grep -o 'ok.ru/videoembed/.............' | sed 's/^/https:\/\//g')
+	else
+		if [ "${f}" -lt 10 ]; then
+			echo "0${f}:" >> ".${1}.txt"
+		else
+			echo "${f}:" >> ".${1}.txt"
+		fi
+		echo "#" > ".${1}.min.txt"
+		echo -e "\t${red}NOK!${normal}"
 		continue
 	fi
 	
-	echo "${f}: ${link}" >> .linux-$anime.txt
-	echo "${link}" >> .linux-$anime.min.txt
-	echo -e "${green}OK!${normal} ( ${link} )"
+	if [ "${f}" -lt 10 ]; then
+		echo "0${f}: ${link}" >> ".${1}.txt"
+	else
+		echo "${f}: ${link}" >> ".${1}.txt"
+	fi
+	echo "${link}" >> ".${1}.min.txt"
+	echo -e "\t${green}OK!${normal} ( ${bold}${link}${normal} )"
 done
 
-sed 's/$'"/`echo \\\r`/" .linux-$anime.txt > $anime.txt
-sed 's/$'"/`echo \\\r`/" .linux-$anime.min.txt > $anime.min.txt
+sed 's/$'"/`echo \\\r`/" ".${1}.txt" > "${1}.txt"
+sed 's/$'"/`echo \\\r`/" ".${1}.min.txt" > "${1}.min.txt"
 
-zip $anime.zip $anime.txt $anime.min.txt &> /dev/null
+zip "${1}.zip" "${1}.txt" "${1}.min.txt" &> /dev/null
 
-rm .linux-* &> /dev/null
-rm $anime.txt &> /dev/null
-rm $anime.min.txt &> /dev/null
+rm ".${1}.txt" &> /dev/null
+rm ".${1}.min.txt" &> /dev/null
+rm "${1}.txt" &> /dev/null
+rm "${1}.min.txt" &> /dev/null
