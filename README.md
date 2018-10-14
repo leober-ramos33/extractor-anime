@@ -17,8 +17,8 @@ Respect and support the creators of the animes, along with their cast.
 ### Examples:
 ```
 ./extractor-animeyt.tv.sh black-clover 52
-./extractor-jkanime.net.sh black-clover-tv 52
-./extractor-reyanimeonline.com.sh black-clover-tv 52
+./extractor-jkanime.net.sh goblin-slayer 2
+./extractor-reyanimeonline.com.sh release-the-spyce 2
 ```
 
 ### Supported pages:
