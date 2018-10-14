@@ -43,7 +43,7 @@ echo "${anime}:" > ".${1}.txt"
 echo "# ${anime}:" > ".${1}.min.txt"
 
 for (( f=1; f <= $2; f++ )); do
-	if [ ${f} -lt 10 ]; then
+	if [ "${f}" -lt 10 ]; then
 		echo -en "0${f}... ( ${underlined}https://www.animeyt.tv/ver/${1}-${f}-sub-espanol${normal} )"
 	else
 		echo -en "${f}... ( ${underlined}https://www.animeyt.tv/ver/${1}-${f}-sub-espanol${normal} )"
@@ -51,11 +51,41 @@ for (( f=1; f <= $2; f++ )); do
 
 	req=$(curl -Ls "https://www.animeyt.tv/ver/${1}-${f}-sub-espanol")
 
-	if echo "${req}" | grep -o 'https:\/\/www\.dailymotion\.com\/embed\/video\/...................?autoPlay=1' &> /dev/null; then
-		link=$(echo "${req}" | grep -o 'https:\/\/www\.dailymotion\.com\/embed\/video\/...................?autoPlay=1' | sed 's/?autoPlay=1//g')
-	elif echo "${req}" | grep 'mega.nz' &> /dev/null; then
-		link=$(echo "${req}" | grep 'mega.nz' | sed 's/.*src="//g' | sed 's/".*//g')
-	else
+	echo "${req}" | grep -o 'https:\/\/www\.dailymotion\.com\/embed\/video\/...................?autoPlay=1' &> /dev/null && dailymotion=true
+	echo "${req}" | grep -o 'https:\/\/mega\.nz\/embed#\!........\!...........................................' &> /dev/null && mega=true
+
+	if [ -z "${dailymotion}" ] && [ -z "${mega}" ]; then
+		if [ "${f}" -lt 10 ]; then
+			echo "0${f}:" >> ".${1}.txt"
+		else
+			echo "${f}:" >> ".${1}.txt"
+		fi
+		echo "#" >> ".${1}.min.txt"
+		echo -e "\n\t${red}NOK!${normal}"
+		continue
+	fi
+
+	if [ "${dailymotion}" = true ] && [ "${mega}" = true ]; then
+		options="\n\t1. Dailymotion\n\t2. MEGA"
+		links=$(echo "${req}" | grep -o 'https:\/\/www\.dailymotion\.com\/embed\/video\/...................?autoPlay=1')
+		links="${links}\n$(echo "${req}" | grep -o 'https:\/\/mega\.nz\/embed#\!........\!...........................................')"
+	elif [ "${dailymotion}" = true ]; then
+		options="\n\t1. Dailymotion"
+		links=$(echo "${req}" | grep -o 'https:\/\/www\.dailymotion\.com\/embed\/video\/...................?autoPlay=1')
+	elif [ "${mega}" = true ]; then
+		options="\n\t1. MEGA"
+		links=$(echo "${req}" | grep -o 'https:\/\/mega\.nz\/embed#\!........\!...........................................')
+	fi
+	echo -e "\n\tOptions: ${options}"
+	echo -e "\t${red}WARNING:${normal} You have 10 seconds to answer, if you do not answer, option 1 will be chosen by default."
+	echo -en "\tSelect an option (a number): "
+
+	if ! read -t 10 -r optionSelected; then
+		optionSelected=1
+		echo ""
+	fi
+	
+	if [ "${optionSelected}" -eq 0 ] || ! [[ "${optionSelected}" =~ ^[0-9]+$ ]]; then
 		if [ "${f}" -lt 10 ]; then
 			echo "0${f}:" >> ".${1}.txt"
 		else
@@ -65,6 +95,8 @@ for (( f=1; f <= $2; f++ )); do
 		echo -e "\t${red}NOK!${normal}"
 		continue
 	fi
+	
+	link=$(echo "${links}" | sed 's/\\n/\n/g' | sed -n -e "${optionSelected}p")
 	
 	if [ "${f}" -lt 10 ]; then
 		echo "0${f}: ${link}" >> ".${1}.txt"
