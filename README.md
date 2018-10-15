@@ -7,7 +7,7 @@ Regardless, the way you use this tool is entirely your responsibility.
 Respect and support the creators of the animes, along with their cast.
 
 ### Requirements:
-* cURL (`sudo apt install curl`)
+* cURL - `sudo apt install curl` or `sudo yum install curl`
 
 ### Usage:
 ```
