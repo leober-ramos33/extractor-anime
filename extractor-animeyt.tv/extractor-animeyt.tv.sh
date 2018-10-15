@@ -61,7 +61,7 @@ for (( f=1; f <= $2; f++ )); do
 			echo "${f}:" >> ".${1}.txt"
 		fi
 		echo "#" >> ".${1}.min.txt"
-		echo -e "\n\t${red}NOK!${normal}"
+		echo -e "\n\t${red}NOK!${normal}\n"
 		continue
 	fi
 
