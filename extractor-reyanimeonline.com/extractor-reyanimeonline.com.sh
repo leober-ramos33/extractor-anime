@@ -58,19 +58,19 @@ for (( f=1; f <= $2; f++ )); do
 	if [ "${openload}" = true ] && [ "${streamango}" = true ] && [ "${ok_ru}" = true ]; then
 		options="\n\t1. Openload\n\t2. Streamango\n\t3. OK.RU"
 		links=$(echo "${req}" | grep -o 'https://openload.co/embed/...........')
-		links="${links}\n$(echo "${req}" | grep -o 'https://streamango.com/embed/.................')"
+		links="${links}\n$(echo "${req}" | grep -o 'https://streamango.com/embed/................')"
 		links="${links}\n$(echo "${req}" | grep -o 'ok.ru/videoembed/.............' | sed 's/^/https:\/\//g')"
 	elif [ "${openload}" = true ] && [ "${streamango}" = true ]; then
 		options="\n\t1. Openload\n\t2. Streamango"
 		links=$(echo "${req}" | grep -o 'https://openload.co/embed/...........')
-		links="${links}\n$(echo "${req}" | grep -o 'https://streamango.com/embed/.................')"
+		links="${links}\n$(echo "${req}" | grep -o 'https://streamango.com/embed/................')"
 	elif [ "${openload}" = true ] && [ "${ok_ru}" = true ]; then
 		options="\n\t1. Openload\n\t2. OK.RU"
 		links=$(echo "${req}" | grep -o 'https://openload.co/embed/...........')
 		links="${links}\n$(echo "${req}" | grep -o 'ok.ru/videoembed/.............' | sed 's/^/https:\/\//g')"
 	elif [ "${streamango}" = true ] && [ "${ok_ru}" = true ]; then
 		options="\n\t1. Streamango\n\t2. OK.RU"
-		links=$(echo "${req}" | grep -o 'https://streamango.com/embed/.................')
+		links=$(echo "${req}" | grep -o 'https://streamango.com/embed/................')
 		links="${links}\n$(echo "${req}" | grep -o 'ok.ru/videoembed/.............' | sed 's/^/https:\/\//g')"
 	elif [ "${openload}" = true ]; then
 		options="\n\t1. Openload"
@@ -86,7 +86,7 @@ for (( f=1; f <= $2; f++ )); do
 	echo -e "\n\tOptions: ${options}"
 	echo -e "\t${red}WARNING:${normal} You have 10 seconds to answer, if you do not answer, option 1 will be chosen by default."
 	echo -en "\tSelect an option (a number): "
-
+	
 	if ! read -t 10 -r optionSelected; then
 		optionSelected=1
 		echo ""
