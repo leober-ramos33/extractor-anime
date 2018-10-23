@@ -41,7 +41,7 @@ for (( f=1; f <= $2; f++ )); do
 	req=$(curl -s "http://reyanimeonline.com/ver/${1}-${f}")
 
 	echo "${req}" | grep -o 'https://openload.co/embed/...........' &> /dev/null && openload=true
-	echo "${req}" | grep -o 'https://streamango.com/embed/.................' &> /dev/null && streamango=true
+	echo "${req}" | grep -o 'https://streamango.com/embed/................' &> /dev/null && streamango=true
 	echo "${req}" | grep -o 'ok.ru/videoembed/.............' &> /dev/null && ok_ru=true
 	
 	if [ -z "${openload}" ] && [ -z "${streamango}" ] && [ -z "${ok_ru}" ]; then
@@ -77,7 +77,7 @@ for (( f=1; f <= $2; f++ )); do
 		links=$(echo "${req}" | grep -o 'https://openload.co/embed/...........')
 	elif [ "${streamango}" = true ]; then
 		options="\n\t1. Streamango"
-		links=$(echo "${req}" | grep -o 'https://streamango.com/embed/.................')
+		links=$(echo "${req}" | grep -o 'https://streamango.com/embed/................')
 	elif [ "${ok_ru}" = true ]; then
 		options="\n\t1. OK.RU"
 		links=$(echo "${req}" | grep -o 'ok.ru/videoembed/.............' | sed 's/^/https:\/\//g')
