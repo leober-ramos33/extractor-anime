@@ -22,7 +22,7 @@ echo "
 
 if [ -z "${1}" ] || [ "${1}" = "-h" ] || [ "${1}" = "--help" ] || [ "${1}" = "--version" ] || [ -z "${2}" ]; then
 	echo "Usage: $(basename "${0}") <anime> <episodes>"
-	echo "Example: ${0} black-clover-tv 45"
+	echo "Example: $(basename "${0}") black-clover-tv 45"
 	exit 0
 fi
 
