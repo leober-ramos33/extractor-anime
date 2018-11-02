@@ -49,12 +49,15 @@ for (( f=1; f <= $2; f++ )); do
 	fi
 	req=$(curl -Ls "http://jkanime.net/${1}/${f}")
 
-	echo "${req}" | grep -o 'https://jkanime.net/jkopen.php?u=...........' &> /dev/null && openload=true
-	echo "${req}" | grep -o 'https://www.yourupload.com/embed/............' &> /dev/null && yourupload=true
-	echo "${req}" | grep -o 'http://www.dailymotion.com/embed/........' &> /dev/null && dailymotion=true
-	echo "${req}" | grep -o 'https://www.rapidvideo.com/e/..........' &> /dev/null && rapidvideo=true
-
-	if [ -z "${openload}" ] && [ -z "${yourupload}" ] && [ -z "${dailymotion}" ] && [ -z "${rapidvideo}" ]; then
+	if echo "${req}" | grep -o 'https://jkanime.net/jkopen.php?u=...........' &> /dev/null; then
+		link=$(echo "${req}" | grep -o 'https://jkanime.net/jkopen.php?u=...........' | sed 's/jkanime.net\/jkopen.php?u=/openload.co\/embed\//g')
+	elif echo "${req}" | grep -o 'https://www.yourupload.com/embed/............' &> /dev/null; then
+		link=$(echo "${req}" | grep -o 'https://yourupload.com/embed/............')
+	elif echo "${req}" | grep -o 'http://www.dailymotion.com/embed/........' &> /dev/null; then
+		link=$(echo "${req}" | grep -o 'http://www.dailymotion.com/embed/video/.......')
+	elif echo "${req}" | grep -o 'https://www.rapidvideo.com/e/..........'; then
+		link=$(echo "${req}" | grep -o 'https://www.rapidvideo.com/e/..........')
+	else
 		if [ "${f}" -lt 10 ]; then
 			echo "0${f}:" >> ".${1}.txt"
 		else
@@ -64,36 +67,7 @@ for (( f=1; f <= $2; f++ )); do
 		echo -e "\t${red}NOK!${normal}"
 		continue
 	fi
-
-	# THIS NEED UPDATE NOW
-	options="\n\t1. Openload\n\t2. Yourupload\n\t3. Dailymotion\n\t4. Rapidvideo"
-	links=$(echo "${req}" | grep -o 'https://jkanime.net/jkopen.php?u=...........' | sed 's/jkanime.net\/jkopen.php?u=/openload.co\/embed\//g')
-	links="${links}\n$(echo "${req}" | grep -o 'https://www.yourupload.com/embed/............')"
-	links="${links}\n$(echo "${req}" | grep -o 'http://www.dailymotion.com/embed/........')"
-	links="${links}\n$(echo "${req}" | grep -o 'https://www.rapidvideo.com/e/..........')"
-
-	echo -e "\n\tOptions: ${options}"
-	echo -e "\t${red}WARNING:${normal} You have 10 seconds to answer, if you do not answer, option 1 will be chosen by default."
-	echo -en "\tSelect an option (a number): "
 	
-	if ! read -t 10 -r optionSelected; then
-		optionSelected=1
-		echo ""
-	fi
-
-	if [ "${optionSelected}" -eq 0 ] || ! [[ "${optionSelected}" =~ ^[0-9]+$ ]]; then
-		if [ "${f}" -lt 10 ]; then
-			echo "0${f}:" >> ".${1}.txt"
-		else
-			echo "${f}:" >> ".${1}.txt"
-		fi
-		echo "#" >> ".${1}.min.txt"
-		echo -e "\t${red}NOK!${normal}"
-		continue
-	fi
-	
-	link=$(echo "${links}" | sed 's/\\n/\n/g' | sed -n -e "${optionSelected}p")
-
 	if [ "${f}" -lt 10 ]; then
 		echo "0${f}: ${link}" >> ".${1}.txt"
 	else
