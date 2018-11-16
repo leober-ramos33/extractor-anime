@@ -42,7 +42,7 @@ for (( f=1; f <= $2; f++ )); do
 
 	echo "${req}" | grep -o 'https://openload.co/embed/...........' &> /dev/null && openload=true
 	echo "${req}" | grep -o 'https://streamango.com/embed/................' &> /dev/null && streamango=true
-	echo "${req}" | grep -o 'ok.ru/videoembed/.............' &> /dev/null && ok_ru=true
+	echo "${req}" | grep -o 'ok.ru/videoembed/............' &> /dev/null && ok_ru=true
 	
 	if [ -z "${openload}" ] && [ -z "${streamango}" ] && [ -z "${ok_ru}" ]; then
 		if [ "${f}" -lt 10 ]; then
@@ -59,7 +59,7 @@ for (( f=1; f <= $2; f++ )); do
 		options="\n\t1. Openload\n\t2. Streamango\n\t3. OK.RU"
 		links=$(echo "${req}" | grep -o 'https://openload.co/embed/...........')
 		links="${links}\n$(echo "${req}" | grep -o 'https://streamango.com/embed/................')"
-		links="${links}\n$(echo "${req}" | grep -o 'ok.ru/videoembed/.............' | sed 's/^/https:\/\//g')"
+		links="${links}\n$(echo "${req}" | grep -o 'ok.ru/videoembed/............' | sed 's/^/https:\/\//g')"
 	elif [ "${openload}" = true ] && [ "${streamango}" = true ]; then
 		options="\n\t1. Openload\n\t2. Streamango"
 		links=$(echo "${req}" | grep -o 'https://openload.co/embed/...........')
@@ -67,11 +67,11 @@ for (( f=1; f <= $2; f++ )); do
 	elif [ "${openload}" = true ] && [ "${ok_ru}" = true ]; then
 		options="\n\t1. Openload\n\t2. OK.RU"
 		links=$(echo "${req}" | grep -o 'https://openload.co/embed/...........')
-		links="${links}\n$(echo "${req}" | grep -o 'ok.ru/videoembed/.............' | sed 's/^/https:\/\//g')"
+		links="${links}\n$(echo "${req}" | grep -o 'ok.ru/videoembed/............' | sed 's/^/https:\/\//g')"
 	elif [ "${streamango}" = true ] && [ "${ok_ru}" = true ]; then
 		options="\n\t1. Streamango\n\t2. OK.RU"
 		links=$(echo "${req}" | grep -o 'https://streamango.com/embed/................')
-		links="${links}\n$(echo "${req}" | grep -o 'ok.ru/videoembed/.............' | sed 's/^/https:\/\//g')"
+		links="${links}\n$(echo "${req}" | grep -o 'ok.ru/videoembed/............' | sed 's/^/https:\/\//g')"
 	elif [ "${openload}" = true ]; then
 		options="\n\t1. Openload"
 		links=$(echo "${req}" | grep -o 'https://openload.co/embed/...........')
